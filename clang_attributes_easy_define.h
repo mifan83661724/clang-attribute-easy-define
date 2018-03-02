@@ -26,8 +26,10 @@
 
 // Constructor
 // The annotated function will be called before 'main', but after 'load'.
+// @num: shoule be larger than 100, 0-100 are reserved for the system.
 // Usage: Use this macro before a function declare
-#define ATTR_CONSTRUCTOR __attribute__((constructor))
+#define ATTR_CONSTRUCTOR_PRIORITY(num) __attribute__((constructor(num)))
+#define ATTR_CONSTRUCTOR  ATTR_CONSTRUCTOR_PRIORITY(150)
 
 // Destructor
 #define ATTR_DESTRUCTOR  __attribute__((destructor))
@@ -41,22 +43,24 @@
 
 // Unavailable
 // Once annotated function was used, the compiler will show the |description| with compiled ERROR.
-// Usage: Use this macro after a function declaration.
+// Usage: after the function's declaration.
 #define ATTR_UNAVAILABLE(description) __attribute__((unavailable(description)))
 
 
 // Cleanup
 // After the annotated variable‘s scope, will invoke the pFunction.
 // Usage: Uss this macro after a variable's declaration.
-#define ATTR_CLEANUP(pFunction) __attribute__((cleanup(pFunction)))
+#define ATTR_CLEANUP(pFunction) __attribute__((cleanup(pFunction), unused))
 
 
 // Subclassing-restricted
 // This attribute can be added to an Objective-C @interface declaration to ensure that this class cannot be subclassed.
-// Usage: put it before a class declaration.
+// Usage: before a class declaration.
 #define ATTR_SUBCLASS_RESTRICTED __attribute__((objc_subclassing_restricted))
 
+
 // Require super method called.
+// Usage: after the function's declaration.
 #define ATTR_REQUIRE_SUPER  __attribute__((objc_requires_super))
 
 
@@ -81,8 +85,9 @@
 // The objc_runtime_name attribute allows annotated interfaces or protocols to use the specified string argument in
 // the object’s metadata name instead of the default name.
 // Usage: This attribute can only be placed before an @protocol or @interface declaration.
-// NOTE:  Will be a good idea to do obfuscated code.
+// NOTE:  Will be a good idea to create obfuscated code.
 #define ATTR_RUNTIME_NAME(name) __attribute__((objc_runtime_name(name)))
+
 
 // Runtime visible.
 // This attribute specifies that the Objective-C class to which it applies is visible to the Objective-C runtime
@@ -91,8 +96,6 @@
 
 
 #endif /* clang_attributes_easy_define_h */
-
-
 
 
 
